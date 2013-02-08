@@ -1,0 +1,40 @@
+{
+  "name": "grunt-append-templates",
+  "description": "Append all templates views in index.html body in script tag.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/samjoch/grunt-append-templates",
+  "author": {
+    "name": "Sam Joch",
+    "email": "samuel@guiora.com",
+    "url": "http://twitter.com/samjoch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/samjoch/grunt-append-templates.git"
+  },
+  "bugs": {
+    "url": "https://github.com/samjoch/grunt-append-templates/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/samjoch/grunt-append-templates/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "Gruntfile.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "0.1.1rc6",
+    "grunt-contrib-clean": "0.4.0rc6",
+    "grunt-contrib-nodeunit": "0.1.2rc6",
+    "grunt": "0.4.0rc6"
+  },
+  "keywords": [
+    "gruntplugin"
+  ]
+}
