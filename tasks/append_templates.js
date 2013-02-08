@@ -16,8 +16,9 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('append_templates', 'Your task description goes here.', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      punctuation: '.',
-      separator: ', '
+      tag: 'script',
+      type: 'text/x-template',
+      layout: 'app/templates/layout.html'
     });
 
     // Iterate over all specified file groups.
@@ -25,26 +26,44 @@ module.exports = function(grunt) {
       // The source files to be concatenated. The "nonull" option is used
       // to retain invalid files/patterns so they can be warned about.
       var files = grunt.file.expand({nonull: true}, fileObj.src);
-
+      var appended_files = [];
       // Concat specified files.
-      var src = files.map(function(filepath) {
+      var scripts = files.map(function(filepath) {
+        // Prevent append layout
+        if (filepath.indexOf('layout') > 0) {
+          return '';
+        }
         // Warn if a source file/pattern was invalid.
         if (!grunt.file.exists(filepath)) {
           grunt.log.error('Source file "' + filepath + '" not found.');
           return '';
         }
         // Read file source.
-        return grunt.file.read(filepath);
-      }).join(options.separator);
+        var attrs = { type: options.type };
+        attrs.id = filepath.split('.')[0].replace(/\//g, '-');
+        var chunk = '  <'+options.tag+' type="'+attrs.type+'" id="'+attrs.id+'">\n';
+        chunk += '    '+grunt.file.read(filepath).replace(/\n/g, '\n    ');
+        chunk += '\n  </'+options.tag+'>';
+        appended_files.push(filepath);
+        return chunk;
+      }).join('\n') + '\n';
 
       // Handle options.
-      src += options.punctuation;
+      var insert = function(text, after, insertion) {
+        var pos = text.indexOf(after) + after.length;
+        return [text.slice(0, pos), insertion, text.slice(pos)].join('');
+      }
 
-      // Write the destination file.
-      grunt.file.write(fileObj.dest, src);
+      // Insert before body in the destination file.
+      var dest = grunt.file.read(options.layout);
+      dest = insert(dest, '<body>', scripts);
+      grunt.file.write(fileObj.dest, dest);
 
       // Print a success message.
-      grunt.log.writeln('File "' + fileObj.dest + '" created.');
+      appended_files.forEach(function(path){
+        grunt.log.writeln('File ' + path + ' appended layout.');
+      });
+
     });
   });
 
