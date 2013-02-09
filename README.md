@@ -1,6 +1,6 @@
 # grunt-append-templates
 
-> Append all templates views in index.html body in script tag.
+> Append all templates views in index.html body in script tags.
 
 ## Getting Started
 _If you haven't used [grunt][] before, be sure to check out the [Getting Started][] guide._
@@ -32,10 +32,14 @@ In your project's Gruntfile, add a section named `append_templates` to the data 
 grunt.initConfig({
   append_templates: {
     options: {
-      // Task-specific options go here.
+      tag: 'script',
+      type: 'text/x-template',
+      layout: 'app/templates/layout.html'
     },
     your_target: {
-      // Target-specific file lists and/or options go here.
+      files: {
+				‘path/to/index.html’: [path/to/templates/*.html]
+			}
     },
   },
 })
@@ -43,46 +47,35 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.tag
 Type: `String`
-Default value: `',  '`
+Default value: `script`
 
-A string value that is used to do something with whatever.
+A string value that is used to do include each template as html content.
 
-#### options.punctuation
+#### options.type
 Type: `String`
-Default value: `'.'`
+Default value: `text/x-template`
 
-A string value that is used to do something else with whatever else.
+A string value that is used to do represent to template you used in your project.
+
+#### options.layout
+Type: `String`
+Default value: `app/templates/layout.html`
+
+The value represent the default layout file of your project.
 
 ### Usage Examples
 
 #### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
+In this example, the default options are used to insert all templates of the project in the default layout file.
 
 ```js
 grunt.initConfig({
   append_templates: {
     options: {},
     files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-})
-```
-
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
-
-```js
-grunt.initConfig({
-  append_templates: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+      ‘public/index.html’: [‘app/templates/**/*.html’],
     },
   },
 })
@@ -92,4 +85,4 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][].
 
 ## Release History
-_(Nothing yet)_
+0.1.0 - Initial Version
